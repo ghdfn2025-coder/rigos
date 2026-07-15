@@ -214,12 +214,7 @@ class AnonymousCog(commands.Cog):
             await self.db.delete_record(record_id)
             raise
 
-        await interaction.followup.send(
-            "✦ 리고스를 통해 익명 메시지가 전송되었습니다.\n\n"
-            "다른 이용자에게는 작성자 정보가 표시되지 않습니다.\n"
-            "운영을 위해 서버 소유자 전용 로그에 작성 기록이 보관됩니다.",
-            ephemeral=True,
-        )
+        await interaction.delete_original_response()
 
     anonymous_admin = app_commands.Group(
         name="익명관리",
