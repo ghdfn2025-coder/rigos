@@ -55,7 +55,7 @@ class RigosBot(commands.Bot):
         if self.user:
             log.info("%s (%s) 로그인 완료", self.user, self.user.id)
             await self.change_presence(
-                activity=discord.Game(name="/익명 | 리고스")
+                activity=discord.Game(name="/익명 | 개발: 모카")
             )
 
 
