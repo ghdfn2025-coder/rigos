@@ -61,7 +61,7 @@ class AnonymousCog(commands.Cog):
         channel = guild.get_channel(channel_id)
         return channel if isinstance(channel, discord.TextChannel) else None
 
-    @app_commands.command(name="익명", description="리고스를 통해 익명 메시지를 전송합니다.")
+    @app_commands.command(name="익명", description="뽀글이를 통해 익명 메시지를 전송합니다.")
     @app_commands.describe(
         내용="전송할 내용을 입력해 주세요. ///를 입력하면 줄바꿈됩니다."
     )
@@ -86,7 +86,7 @@ class AnonymousCog(commands.Cog):
 
         if post_channel is None or log_channel is None:
             await interaction.followup.send(
-                "리고스의 게시 채널 또는 로그 채널이 아직 설정되지 않았습니다.\n"
+                "뽀글이의 게시 채널 또는 로그 채널이 아직 설정되지 않았습니다.\n"
                 "서버 소유자에게 문의해 주세요.",
                 ephemeral=True,
             )
@@ -168,7 +168,7 @@ class AnonymousCog(commands.Cog):
             await self.db.attach_public_message(record_id, public_message.id)
 
             log_embed = discord.Embed(
-                title="✦ 리고스 기록",
+                title="✦ 뽀글이 기록",
                 description=f"익명 메시지 `#{record_id}`가 전송되었습니다.",
                 timestamp=now,
             )
@@ -218,12 +218,12 @@ class AnonymousCog(commands.Cog):
 
     anonymous_admin = app_commands.Group(
         name="익명관리",
-        description="리고스의 설정과 기록을 관리합니다.",
+        description="뽀글이의 설정과 기록을 관리합니다.",
         guild_only=True,
         default_permissions=discord.Permissions(administrator=True),
     )
 
-    @anonymous_admin.command(name="설정", description="리고스의 채널과 기본값을 설정합니다.")
+    @anonymous_admin.command(name="설정", description="뽀글이의 채널과 기본값을 설정합니다.")
     @app_commands.describe(
         게시채널="익명 메시지가 게시될 채널",
         로그채널="작성자와 원문이 기록될 비공개 채널",
@@ -262,7 +262,7 @@ class AnonymousCog(commands.Cog):
             max_length=최대글자수,
         )
 
-        lines = ["✅ 리고스 설정을 저장했습니다."]
+        lines = ["✅ 뽀글이 설정을 저장했습니다."]
         if 게시채널:
             lines.append(f"게시 채널: {게시채널.mention}")
         if 로그채널:
@@ -308,7 +308,7 @@ class AnonymousCog(commands.Cog):
             )
 
         embed = discord.Embed(
-            title=f"✦ 리고스 기록 #{row['id']}",
+            title=f"✦ 뽀글이 기록 #{row['id']}",
             timestamp=row["created_at"],
         )
         embed.add_field(
@@ -349,7 +349,7 @@ class AnonymousCog(commands.Cog):
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
-    @anonymous_admin.command(name="상태", description="리고스의 현재 설정을 확인합니다.")
+    @anonymous_admin.command(name="상태", description="뽀글이의 현재 설정을 확인합니다.")
     @app_commands.check(owner_only)
     async def status(self, interaction: discord.Interaction) -> None:
         assert interaction.guild is not None
@@ -358,7 +358,7 @@ class AnonymousCog(commands.Cog):
         def channel_text(channel_id: int | None) -> str:
             return f"<#{channel_id}>" if channel_id else "설정되지 않음"
 
-        embed = discord.Embed(title="✦ 리고스 설정 상태")
+        embed = discord.Embed(title="✦ 뽀글이 설정 상태")
         embed.add_field(
             name="채널",
             value=(
@@ -385,13 +385,13 @@ class AnonymousCog(commands.Cog):
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
-    @anonymous_admin.command(name="통계", description="리고스의 이용 통계를 확인합니다.")
+    @anonymous_admin.command(name="통계", description="뽀글이의 이용 통계를 확인합니다.")
     @app_commands.check(owner_only)
     async def statistics(self, interaction: discord.Interaction) -> None:
         assert interaction.guild is not None
         stats = await self.db.get_statistics(interaction.guild.id)
 
-        embed = discord.Embed(title="✦ 리고스 이용 통계")
+        embed = discord.Embed(title="✦ 뽀글이 이용 통계")
         embed.add_field(name="오늘", value=f"{stats['today']:,}개")
         embed.add_field(name="이번 주", value=f"{stats['this_week']:,}개")
         embed.add_field(name="전체", value=f"{stats['total']:,}개")
